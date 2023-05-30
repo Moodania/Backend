@@ -1,3 +1,3 @@
 package com.mood.Moodania.presentation.models;
 
-public record SearchingParameters(String region, int age, String[] interests){}
+public record SearchOptions(String region, int age, String[] interests){}

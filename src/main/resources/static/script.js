@@ -16,9 +16,6 @@ connectButton.addEventListener("click", function (event) {
             socket.close();
     }
     console.log(socket.readyState);
-    if (socket.readyState === 0){
-        textBox.textContent = textBox.textContent + "Connected";
-    }
 
 
 });
@@ -40,7 +37,7 @@ function createSocket(url) {
     };
 
     newSocket.onopen = (event) =>{
-        textBox.textContent += "connection established";
+        textBox.textContent += "\n connection established";
     }
 
     return newSocket;

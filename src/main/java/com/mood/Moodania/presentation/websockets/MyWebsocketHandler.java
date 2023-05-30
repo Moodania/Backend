@@ -1,5 +1,6 @@
 package com.mood.Moodania.presentation.websockets;
 
+import com.mood.Moodania.application.services.implementations.WebSocketSessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,24 @@ import java.util.UUID;
 
 @Component
 public class MyWebsocketHandler extends TextWebSocketHandler {
+
+    WebSocketSessionService webSocketSessionService;
     Logger log = LoggerFactory.getLogger(MyWebsocketHandler.class);
 
     public HashMap<String, WebSocketSession> mapa = new HashMap<>();
 
+    public MyWebsocketHandler(@Autowired WebSocketSessionService webSocketSessionService) {
+        this.webSocketSessionService = webSocketSessionService;
+    }
+
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        mapa.put(session.getId(), session);
+        //UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication();
+        /* TODO() */ UUID userId = UUID.randomUUID();
+        if (webSocketSessionService.isPresent(session.getId()))
+            webSocketSessionService.updateConnection(userId, session);
+        else
+            webSocketSessionService.addNewConnection(userId, session);
         log.info("New session detected: " + session.getId());
     }
 
